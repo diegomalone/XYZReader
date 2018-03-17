@@ -23,6 +23,8 @@ allprojects {
 
     ext {
         androidSupportVersion = "27.1.0"
+        constraintLayoutVersion = "1.0.2"
+        okHttpVersion = "3.1.2"
     }
 }
 

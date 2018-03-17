@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.diegomalone.xyzreader">
 
@@ -29,6 +30,7 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <data android:mimeType="vnd.android.cursor.item/vnd.com.diegomalone.xyzreader.items" />
             </intent-filter>
+
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.ArticleListActivity" />
@@ -43,4 +45,5 @@
             android:authorities="com.diegomalone.xyzreader"
             android:exported="false" />
     </application>
+
 </manifest>
