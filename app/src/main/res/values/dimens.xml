@@ -1,4 +1,9 @@
 <resources>
+    <dimen name="default_element_margin">8dp</dimen>
+    <dimen name="big_element_margin">12dp</dimen>
+
+    <dimen name="article_card_title_font_size">18sp</dimen>
+
     <!-- detail -->
     <dimen name="detail_title_text_size">32sp</dimen>
     <dimen name="detail_body_text_size">22sp</dimen>

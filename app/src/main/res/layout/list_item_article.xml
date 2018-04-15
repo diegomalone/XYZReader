@@ -1,46 +1,77 @@
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:clickable="true"
     android:focusable="true"
     android:foreground="?selectableItemBackground">
 
-    <LinearLayout
+    <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_margin="@dimen/default_element_margin">
 
-        <!--suppress AndroidLintContentDescription -->
-        <com.diegomalone.xyzreader.ui.DynamicHeightNetworkImageView
+        <com.android.volley.toolbox.NetworkImageView
             android:id="@+id/thumbnail"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:background="@color/colorPhotoPlaceholder" />
+            android:scaleType="centerCrop"
+            app:layout_constraintBottom_toTopOf="@id/article_title"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:visibility="visible" />
 
         <TextView
             android:id="@+id/article_title"
-            style="@style/TextAppearance.AppCompat.Subhead"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/default_element_margin"
+            android:layout_marginStart="@dimen/default_element_margin"
+            android:layout_marginTop="@dimen/default_element_margin"
             android:ellipsize="end"
-            android:maxLines="4"
-            android:paddingBottom="4dp"
-            android:paddingLeft="16dp"
-            android:paddingRight="16dp"
-            android:paddingTop="16dp"
-            android:textColor="@color/colorLightGray" />
+            android:maxLines="3"
+            android:textColor="@color/colorSecondaryText"
+            android:textSize="@dimen/article_card_title_font_size"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/thumbnail"
+            tools:text="This is the article title" />
 
         <TextView
-            android:id="@+id/article_subtitle"
-            style="@style/TextAppearance.AppCompat.Body1"
-            android:layout_width="match_parent"
+            android:id="@+id/article_author"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/default_element_margin"
+            android:layout_marginStart="@dimen/default_element_margin"
+            android:layout_marginTop="@dimen/big_element_margin"
             android:ellipsize="end"
-            android:maxLines="2"
-            android:paddingBottom="16dp"
-            android:paddingLeft="16dp"
-            android:paddingRight="16dp"
-            android:textColor="#6000" />
-    </LinearLayout>
+            android:maxLines="1"
+            android:textColor="@color/colorSecondaryText"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/article_title"
+            tools:text="Diego Malone" />
+
+        <TextView
+            android:id="@+id/article_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/default_element_margin"
+            android:layout_marginEnd="@dimen/default_element_margin"
+            android:layout_marginStart="@dimen/default_element_margin"
+            android:layout_marginTop="@dimen/default_element_margin"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:textColor="@color/colorSecondaryText"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/article_author"
+            tools:text="26/03/2018" />
+
+    </android.support.constraint.ConstraintLayout>
 
 </android.support.v7.widget.CardView>
