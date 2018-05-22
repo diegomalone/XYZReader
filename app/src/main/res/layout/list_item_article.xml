@@ -9,8 +9,7 @@
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/default_element_margin">
+        android:layout_height="wrap_content">
 
         <com.android.volley.toolbox.NetworkImageView
             android:id="@+id/thumbnail"

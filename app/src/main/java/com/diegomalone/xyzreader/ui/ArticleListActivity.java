@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
@@ -24,6 +25,7 @@ import com.diegomalone.xyzreader.data.ArticleLoader;
 import com.diegomalone.xyzreader.data.ItemsContract;
 import com.diegomalone.xyzreader.data.UpdaterService;
 import com.diegomalone.xyzreader.utils.DateUtil;
+import com.diegomalone.xyzreader.utils.SpacingItemDecorator;
 
 import java.util.Date;
 
@@ -43,6 +45,8 @@ public class ArticleListActivity extends AppCompatActivity implements
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private RecyclerView mRecyclerView;
 
+    private boolean isPhone = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,6 +55,17 @@ public class ArticleListActivity extends AppCompatActivity implements
         mToolbar = findViewById(R.id.toolbar);
         mToolbar.setLogo(R.drawable.logo);
 
+        isPhone = getResources().getBoolean(R.bool.is_phone);
+
+        setupRecyclerView();
+        getLoaderManager().initLoader(0, null, this);
+
+        if (savedInstanceState == null) {
+            refresh();
+        }
+    }
+
+    private void setupRecyclerView() {
         mSwipeRefreshLayout = findViewById(R.id.swipe_refresh_layout);
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -60,11 +75,10 @@ public class ArticleListActivity extends AppCompatActivity implements
         });
 
         mRecyclerView = findViewById(R.id.recycler_view);
-        getLoaderManager().initLoader(0, null, this);
+        mRecyclerView.setLayoutManager(getLayoutManager());
 
-        if (savedInstanceState == null) {
-            refresh();
-        }
+        int spacingMargin = (int) getResources().getDimension(R.dimen.default_element_margin);
+        mRecyclerView.addItemDecoration(new SpacingItemDecorator(!isPhone, spacingMargin));
     }
 
     private void refresh() {
@@ -110,9 +124,15 @@ public class ArticleListActivity extends AppCompatActivity implements
         Adapter adapter = new Adapter(cursor);
         adapter.setHasStableIds(true);
         mRecyclerView.setAdapter(adapter);
+    }
+
+    private RecyclerView.LayoutManager getLayoutManager() {
+        if (isPhone) {
+            return new LinearLayoutManager(this);
+        }
+
         int columnCount = getResources().getInteger(R.integer.list_column_count);
-        StaggeredGridLayoutManager sglm = new StaggeredGridLayoutManager(columnCount, StaggeredGridLayoutManager.VERTICAL);
-        mRecyclerView.setLayoutManager(sglm);
+        return new StaggeredGridLayoutManager(columnCount, StaggeredGridLayoutManager.VERTICAL);
     }
 
     @Override
@@ -149,7 +169,7 @@ public class ArticleListActivity extends AppCompatActivity implements
         }
 
         @Override
-        public void onBindViewHolder(ViewHolder holder, int position) {
+        public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
             mCursor.moveToPosition(position);
 
             String publishedDateString = mCursor.getString(ArticleLoader.Query.PUBLISHED_DATE);
@@ -166,7 +186,6 @@ public class ArticleListActivity extends AppCompatActivity implements
             holder.thumbnailView.setImageUrl(
                     mCursor.getString(ArticleLoader.Query.THUMB_URL),
                     ImageLoaderHelper.getInstance(ArticleListActivity.this).getImageLoader());
-//            holder.thumbnailView.setAspectRatio(mCursor.getFloat(ArticleLoader.Query.ASPECT_RATIO));
         }
 
         @Override
