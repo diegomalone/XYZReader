@@ -1,4 +1,5 @@
 <resources>
+    <dimen name="small_element_margin">8dp</dimen>
     <dimen name="default_element_margin">8dp</dimen>
     <dimen name="big_element_margin">12dp</dimen>
 
@@ -7,6 +8,7 @@
     <dimen name="article_list_margin_top">0dp</dimen>
 
     <!-- detail -->
+    <dimen name="detail_image_height">240dp</dimen>
     <dimen name="detail_title_text_size">32sp</dimen>
     <dimen name="detail_body_text_size">22sp</dimen>
 
