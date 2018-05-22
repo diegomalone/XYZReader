@@ -18,8 +18,8 @@
             android:layout_height="match_parent"
             android:fitsSystemWindows="true"
             app:contentScrim="?attr/colorPrimary"
-            app:statusBarScrim="@color/colorSecondaryText"
-            app:layout_scrollFlags="scroll|exitUntilCollapsed">
+            app:layout_scrollFlags="scroll|exitUntilCollapsed"
+            app:statusBarScrim="@color/colorSecondaryText">
 
             <ImageView
                 android:id="@+id/photo"
@@ -90,12 +90,23 @@
                 android:id="@+id/article_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:maxLines="@integer/max_text_lines"
+                android:layout_marginTop="@dimen/big_element_margin"
                 android:ellipsize="middle"
-                android:layout_marginTop="@dimen/big_element_margin" />
+                android:maxLines="@integer/max_text_lines" />
 
         </LinearLayout>
 
     </android.support.v4.widget.NestedScrollView>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/share_fab"
+        android:layout_width="@dimen/fab_size"
+        android:layout_height="@dimen/fab_size"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="@dimen/fab_margin"
+        app:elevation="@dimen/fab_elevation"
+        app:fabSize="normal"
+        app:pressedTranslationZ="@dimen/fab_press_translation_z"
+        app:srcCompat="@drawable/ic_share_white_24dp" />
 
 </android.support.design.widget.CoordinatorLayout>

@@ -2,11 +2,15 @@ package com.diegomalone.xyzreader.ui;
 
 import android.app.Fragment;
 import android.app.LoaderManager;
+import android.content.Intent;
 import android.content.Loader;
+import android.content.res.ColorStateList;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.ShareCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.graphics.Palette;
@@ -48,6 +52,7 @@ public class ArticleDetailFragment extends Fragment implements
     private Toolbar mToolbar;
     private CollapsingToolbarLayout mCollapsingToolbarLayout;
     private ImageView mPhotoView;
+    private FloatingActionButton mFab;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -97,6 +102,7 @@ public class ArticleDetailFragment extends Fragment implements
 
         mToolbar = mRootView.findViewById(R.id.toolbar);
         mPhotoView = mRootView.findViewById(R.id.photo);
+        mFab = mRootView.findViewById(R.id.share_fab);
 
         getActivityCast().setSupportActionBar(mToolbar);
         ActionBar actionBar = getActivityCast().getSupportActionBar();
@@ -110,15 +116,15 @@ public class ArticleDetailFragment extends Fragment implements
         mCollapsingToolbarLayout.setExpandedTitleColor(getResources().getColor(android.R.color.transparent));
 
 
-//        mRootView.findViewById(R.id.share_fab).setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                startActivity(Intent.createChooser(ShareCompat.IntentBuilder.from(getActivity())
-//                        .setType("text/plain")
-//                        .setText("Some sample text")
-//                        .getIntent(), getString(R.string.action_share)));
-//            }
-//        });
+        mFab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(Intent.createChooser(ShareCompat.IntentBuilder.from(getActivity())
+                        .setType("text/plain")
+                        .setText("Some sample text")
+                        .getIntent(), getString(R.string.action_share)));
+            }
+        });
 
         bindViews();
 
@@ -163,8 +169,6 @@ public class ArticleDetailFragment extends Fragment implements
                             .intoCallBack(new BitmapPalette.CallBack() {
                                 @Override
                                 public void onPaletteLoaded(@Nullable Palette palette) {
-                                    Log.d(TAG, "REach callback " + (palette != null));
-
                                     if (palette != null) {
                                         Log.d(TAG, palette.toString());
                                         int mutedColor = palette.getMutedColor(ContextCompat.getColor(getActivityCast(), (R.color.colorPrimary)));
@@ -172,6 +176,18 @@ public class ArticleDetailFragment extends Fragment implements
 
                                         mCollapsingToolbarLayout.setContentScrimColor(mutedColor);
                                         mCollapsingToolbarLayout.setStatusBarScrimColor(darkMutedColor);
+
+                                        ColorStateList fabColorStateList = new ColorStateList(
+                                                new int[][]{
+                                                        new int[]{android.R.attr.state_pressed},
+                                                        new int[]{}
+                                                },
+                                                new int[]{
+                                                        mutedColor,
+                                                        mutedColor
+                                                }
+                                        );
+                                        mFab.setBackgroundTintList(fabColorStateList);
                                     }
                                 }
                             })
