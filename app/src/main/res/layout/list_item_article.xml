@@ -1,5 +1,4 @@
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -7,50 +6,41 @@
     android:focusable="true"
     android:foreground="?selectableItemBackground">
 
-    <android.support.constraint.ConstraintLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
-        <com.android.volley.toolbox.NetworkImageView
+        <ImageView
             android:id="@+id/thumbnail"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:scaleType="centerCrop"
-            app:layout_constraintBottom_toTopOf="@id/article_title"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+            android:scaleType="fitCenter"
             tools:visibility="visible" />
 
         <TextView
             android:id="@+id/article_title"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/default_element_margin"
             android:layout_marginStart="@dimen/default_element_margin"
-            android:layout_marginTop="@dimen/default_element_margin"
+            android:layout_marginTop="@dimen/big_element_margin"
             android:ellipsize="end"
             android:maxLines="3"
             android:textColor="@color/colorSecondaryText"
             android:textSize="@dimen/article_card_title_font_size"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/thumbnail"
             tools:text="This is the article title" />
 
         <TextView
             android:id="@+id/article_author"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/default_element_margin"
+            android:layout_marginEnd="@dimen/default_element_margin"
             android:layout_marginStart="@dimen/default_element_margin"
             android:layout_marginTop="@dimen/big_element_margin"
             android:ellipsize="end"
             android:maxLines="1"
             android:textColor="@color/colorSecondaryText"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/article_title"
             tools:text="Diego Malone" />
 
         <TextView
@@ -64,13 +54,8 @@
             android:ellipsize="end"
             android:maxLines="1"
             android:textColor="@color/colorSecondaryText"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/article_author"
             tools:text="26/03/2018" />
 
-    </android.support.constraint.ConstraintLayout>
+    </LinearLayout>
 
 </android.support.v7.widget.CardView>

@@ -4,6 +4,8 @@
 
     <dimen name="article_card_title_font_size">18sp</dimen>
 
+    <dimen name="article_list_margin_top">0dp</dimen>
+
     <!-- detail -->
     <dimen name="detail_title_text_size">32sp</dimen>
     <dimen name="detail_body_text_size">22sp</dimen>

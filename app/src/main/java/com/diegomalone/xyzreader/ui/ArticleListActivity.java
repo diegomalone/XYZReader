@@ -15,11 +15,13 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.android.volley.toolbox.NetworkImageView;
+import com.bumptech.glide.Glide;
 import com.diegomalone.xyzreader.R;
 import com.diegomalone.xyzreader.data.ArticleLoader;
 import com.diegomalone.xyzreader.data.ItemsContract;
@@ -41,6 +43,7 @@ public class ArticleListActivity extends AppCompatActivity implements
         LoaderManager.LoaderCallbacks<Cursor> {
 
     private static final String TAG = ArticleListActivity.class.toString();
+
     private Toolbar mToolbar;
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private RecyclerView mRecyclerView;
@@ -82,6 +85,7 @@ public class ArticleListActivity extends AppCompatActivity implements
     }
 
     private void refresh() {
+        Log.d(TAG, "Refreshing");
         startService(new Intent(this, UpdaterService.class));
     }
 
@@ -183,9 +187,17 @@ public class ArticleListActivity extends AppCompatActivity implements
             holder.authorTextView.setText(articleAuthor);
             holder.publishedDateTextView.setText(articleDate);
 
-            holder.thumbnailView.setImageUrl(
-                    mCursor.getString(ArticleLoader.Query.THUMB_URL),
-                    ImageLoaderHelper.getInstance(ArticleListActivity.this).getImageLoader());
+            String imageUrl = mCursor.getString(ArticleLoader.Query.THUMB_URL);
+
+            if (imageUrl != null && !imageUrl.isEmpty()) {
+                holder.thumbnailView.setVisibility(View.VISIBLE);
+
+                Glide.with(ArticleListActivity.this)
+                        .load(imageUrl)
+                        .into(holder.thumbnailView);
+            } else {
+                holder.thumbnailView.setVisibility(View.GONE);
+            }
         }
 
         @Override
@@ -195,7 +207,7 @@ public class ArticleListActivity extends AppCompatActivity implements
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        public NetworkImageView thumbnailView;
+        public ImageView thumbnailView;
         public TextView titleTextView;
         public TextView authorTextView;
         public TextView publishedDateTextView;
