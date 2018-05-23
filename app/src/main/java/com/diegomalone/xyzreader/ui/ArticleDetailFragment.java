@@ -125,8 +125,6 @@ public class ArticleDetailFragment extends Fragment implements
         setToolbar();
 
         mCollapsingToolbarLayout = mRootView.findViewById(R.id.collapsing_toolbar);
-        mCollapsingToolbarLayout.setExpandedTitleColor(getResources().getColor(android.R.color.transparent));
-
 
         mFab.setOnClickListener(new View.OnClickListener() {
             @Override

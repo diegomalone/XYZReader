@@ -1,11 +1,11 @@
 <resources>
-    <dimen name="small_element_margin">8dp</dimen>
+    <dimen name="small_element_margin">4dp</dimen>
     <dimen name="default_element_margin">8dp</dimen>
     <dimen name="big_element_margin">12dp</dimen>
 
     <dimen name="article_card_title_font_size">18sp</dimen>
 
-    <dimen name="article_list_margin_top">0dp</dimen>
+    <dimen name="article_list_margin">@dimen/default_element_margin</dimen>
 
     <!-- detail -->
     <dimen name="detail_image_height">240dp</dimen>
@@ -15,7 +15,7 @@
     <item name="detail_body_line_spacing_multiplier" format="float" type="fraction">1.25</item>
 
     <dimen name="fab_elevation">6dp</dimen>
-    <dimen name="fab_press_translation_z">12dp</dimen>
+    <dimen name="fab_press_translation_z">6dp</dimen>
     <dimen name="fab_size">56dp</dimen>
     <dimen name="fab_margin">24dp</dimen>
 </resources>

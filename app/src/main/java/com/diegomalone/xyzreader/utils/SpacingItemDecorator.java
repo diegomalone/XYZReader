@@ -18,7 +18,6 @@ public class SpacingItemDecorator extends RecyclerView.ItemDecoration {
     public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
         if (isGrid) {
             outRect.left = space;
-            outRect.right = space;
         }
 
         outRect.top = space;

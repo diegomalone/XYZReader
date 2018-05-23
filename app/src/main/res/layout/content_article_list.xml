@@ -19,11 +19,8 @@
             android:layout_height="match_parent"
             android:clipToPadding="false"
             android:paddingBottom="@dimen/list_bottom_margin"
-            android:paddingTop="@dimen/article_list_margin_top"
-            android:paddingEnd="@dimen/default_element_margin"
-            android:paddingLeft="@dimen/default_element_margin"
-            android:paddingRight="@dimen/default_element_margin"
-            android:paddingStart="@dimen/default_element_margin"
+            android:paddingRight="@dimen/article_list_margin"
+            android:paddingEnd="@dimen/article_list_margin"
             android:scrollbarStyle="outsideOverlay" />
     </android.support.v4.widget.SwipeRefreshLayout>
 

@@ -52,7 +52,6 @@
             android:layout_marginBottom="@dimen/default_element_margin"
             android:layout_marginEnd="@dimen/default_element_margin"
             android:layout_marginStart="@dimen/default_element_margin"
-            android:layout_marginTop="@dimen/default_element_margin"
             android:ellipsize="end"
             android:maxLines="1"
             android:textColor="@color/colorSecondaryText"

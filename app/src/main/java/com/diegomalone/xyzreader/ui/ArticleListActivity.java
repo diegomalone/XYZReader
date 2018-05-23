@@ -49,8 +49,6 @@ public class ArticleListActivity extends AppCompatActivity implements
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private RecyclerView mRecyclerView;
 
-    private boolean isPhone = false;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,14 +57,8 @@ public class ArticleListActivity extends AppCompatActivity implements
         mToolbar = findViewById(R.id.toolbar);
         mToolbar.setLogo(R.drawable.logo);
 
-        isPhone = getResources().getBoolean(R.bool.is_phone);
-
         setupRecyclerView();
         getLoaderManager().initLoader(0, null, this);
-
-        if (savedInstanceState == null) {
-            refresh();
-        }
     }
 
     private void setupRecyclerView() {
@@ -79,14 +71,11 @@ public class ArticleListActivity extends AppCompatActivity implements
         });
 
         mRecyclerView = findViewById(R.id.recycler_view);
-        mRecyclerView.setLayoutManager(getLayoutManager());
-
-        int spacingMargin = (int) getResources().getDimension(R.dimen.default_element_margin);
-        mRecyclerView.addItemDecoration(new SpacingItemDecorator(!isPhone, spacingMargin));
+        int spacingMargin = (int) getResources().getDimension(R.dimen.article_list_margin);
+        mRecyclerView.addItemDecoration(new SpacingItemDecorator(true, spacingMargin));
     }
 
     private void refresh() {
-        Log.d(TAG, "Refreshing");
         startService(new Intent(this, UpdaterService.class));
     }
 
@@ -129,13 +118,11 @@ public class ArticleListActivity extends AppCompatActivity implements
         Adapter adapter = new Adapter(cursor);
         adapter.setHasStableIds(true);
         mRecyclerView.setAdapter(adapter);
+
+        mRecyclerView.setLayoutManager(getLayoutManager());
     }
 
     private RecyclerView.LayoutManager getLayoutManager() {
-        if (isPhone) {
-            return new LinearLayoutManager(this);
-        }
-
         int columnCount = getResources().getInteger(R.integer.list_column_count);
         return new StaggeredGridLayoutManager(columnCount, StaggeredGridLayoutManager.VERTICAL);
     }
