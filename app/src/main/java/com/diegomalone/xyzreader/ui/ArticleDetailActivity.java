@@ -17,6 +17,9 @@ import com.diegomalone.xyzreader.R;
 import com.diegomalone.xyzreader.data.ArticleLoader;
 import com.diegomalone.xyzreader.data.ItemsContract;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * An activity representing a single Article detail screen, letting you swipe between articles.
  */
@@ -31,6 +34,8 @@ public class ArticleDetailActivity extends AppCompatActivity
     private ViewPager mPager;
     private MyPagerAdapter mPagerAdapter;
 
+    private Map<Integer, ArticleDetailFragment> fragmentMap = new HashMap<>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,6 +45,7 @@ public class ArticleDetailActivity extends AppCompatActivity
 
         mPagerAdapter = new MyPagerAdapter(getFragmentManager());
         mPager = findViewById(R.id.pager);
+        mPager.setOffscreenPageLimit(0);
         mPager.setAdapter(mPagerAdapter);
         mPager.setPageMargin((int) TypedValue
                 .applyDimension(TypedValue.COMPLEX_UNIT_DIP, 1, getResources().getDisplayMetrics()));
@@ -57,6 +63,8 @@ public class ArticleDetailActivity extends AppCompatActivity
                     mCursor.moveToPosition(position);
                 }
                 mSelectedItemId = mCursor.getLong(ArticleLoader.Query._ID);
+
+                setFragmentActive(position);
             }
         });
 
@@ -65,6 +73,12 @@ public class ArticleDetailActivity extends AppCompatActivity
                 mStartId = ItemsContract.Items.getItemId(getIntent().getData());
                 mSelectedItemId = mStartId;
             }
+        }
+    }
+
+    private void setFragmentActive(int position) {
+        if (fragmentMap.containsKey(position)) {
+            fragmentMap.get(position).setVisible();
         }
     }
 
@@ -86,6 +100,7 @@ public class ArticleDetailActivity extends AppCompatActivity
                 if (mCursor.getLong(ArticleLoader.Query._ID) == mStartId) {
                     final int position = mCursor.getPosition();
                     mPager.setCurrentItem(position, false);
+                    setFragmentActive(position);
                     break;
                 }
                 mCursor.moveToNext();
@@ -120,7 +135,11 @@ public class ArticleDetailActivity extends AppCompatActivity
         @Override
         public Fragment getItem(int position) {
             mCursor.moveToPosition(position);
-            return ArticleDetailFragment.newInstance(mCursor.getLong(ArticleLoader.Query._ID));
+            ArticleDetailFragment fragment = ArticleDetailFragment.newInstance(mCursor.getLong(ArticleLoader.Query._ID));
+
+            fragmentMap.put(position, fragment);
+
+            return fragment;
         }
 
         @Override

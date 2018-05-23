@@ -28,6 +28,7 @@ import com.diegomalone.xyzreader.data.ItemsContract;
 import com.diegomalone.xyzreader.data.UpdaterService;
 import com.diegomalone.xyzreader.utils.DateUtil;
 import com.diegomalone.xyzreader.utils.SpacingItemDecorator;
+import com.github.florent37.glidepalette.GlidePalette;
 
 import java.util.Date;
 
@@ -194,6 +195,13 @@ public class ArticleListActivity extends AppCompatActivity implements
 
                 Glide.with(ArticleListActivity.this)
                         .load(imageUrl)
+                        .listener(GlidePalette.with(imageUrl)
+                                .use(GlidePalette.Profile.MUTED)
+                                .intoBackground(holder.container, GlidePalette.Swatch.RGB)
+                                .intoTextColor(holder.titleTextView, GlidePalette.Swatch.TITLE_TEXT_COLOR)
+                                .intoTextColor(holder.authorTextView, GlidePalette.Swatch.BODY_TEXT_COLOR)
+                                .intoTextColor(holder.publishedDateTextView, GlidePalette.Swatch.BODY_TEXT_COLOR)
+                        )
                         .into(holder.thumbnailView);
             } else {
                 holder.thumbnailView.setVisibility(View.GONE);
@@ -211,9 +219,11 @@ public class ArticleListActivity extends AppCompatActivity implements
         public TextView titleTextView;
         public TextView authorTextView;
         public TextView publishedDateTextView;
+        public ViewGroup container;
 
         public ViewHolder(View view) {
             super(view);
+            container = view.findViewById(R.id.container);
             thumbnailView = view.findViewById(R.id.thumbnail);
             titleTextView = view.findViewById(R.id.article_title);
             authorTextView = view.findViewById(R.id.article_author);

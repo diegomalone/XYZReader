@@ -91,7 +91,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/big_element_margin"
-                android:ellipsize="middle"
+                android:ellipsize="end"
                 android:maxLines="@integer/max_text_lines" />
 
         </LinearLayout>

@@ -1,11 +1,13 @@
 package com.diegomalone.xyzreader.ui;
 
+import android.app.Activity;
 import android.app.Fragment;
 import android.app.LoaderManager;
 import android.content.Intent;
 import android.content.Loader;
 import android.content.res.ColorStateList;
 import android.database.Cursor;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -20,6 +22,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -44,6 +48,7 @@ public class ArticleDetailFragment extends Fragment implements
     private static final String TAG = "ArticleDetailFragment";
 
     public static final String ARG_ITEM_ID = "item_id";
+    private static final int INVALID_COLOR = -1;
 
     private Cursor mCursor;
     private long mItemId;
@@ -53,6 +58,11 @@ public class ArticleDetailFragment extends Fragment implements
     private CollapsingToolbarLayout mCollapsingToolbarLayout;
     private ImageView mPhotoView;
     private FloatingActionButton mFab;
+
+    private int statusBarColor = INVALID_COLOR;
+
+    private boolean contentAlreadySet = false;
+    private boolean visibilityAlreadyRequested = false;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -95,6 +105,14 @@ public class ArticleDetailFragment extends Fragment implements
         getLoaderManager().initLoader(0, null, this);
     }
 
+    public void setVisible() {
+        if (mToolbar != null) {
+            setToolbar();
+        }
+
+        updateStatusBarColor();
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -104,13 +122,7 @@ public class ArticleDetailFragment extends Fragment implements
         mPhotoView = mRootView.findViewById(R.id.photo);
         mFab = mRootView.findViewById(R.id.share_fab);
 
-        getActivityCast().setSupportActionBar(mToolbar);
-        ActionBar actionBar = getActivityCast().getSupportActionBar();
-
-        if (actionBar != null) {
-            actionBar.setDisplayHomeAsUpEnabled(true);
-            actionBar.setDisplayShowHomeEnabled(true);
-        }
+        setToolbar();
 
         mCollapsingToolbarLayout = mRootView.findViewById(R.id.collapsing_toolbar);
         mCollapsingToolbarLayout.setExpandedTitleColor(getResources().getColor(android.R.color.transparent));
@@ -129,6 +141,16 @@ public class ArticleDetailFragment extends Fragment implements
         bindViews();
 
         return mRootView;
+    }
+
+    private void setToolbar() {
+        getActivityCast().setSupportActionBar(mToolbar);
+        ActionBar actionBar = getActivityCast().getSupportActionBar();
+
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setDisplayShowHomeEnabled(true);
+        }
     }
 
     private void bindViews() {
@@ -188,11 +210,19 @@ public class ArticleDetailFragment extends Fragment implements
                                                 }
                                         );
                                         mFab.setBackgroundTintList(fabColorStateList);
+
+                                        statusBarColor = darkMutedColor;
+
+                                        if (visibilityAlreadyRequested) {
+                                            updateStatusBarColor();
+                                        }
                                     }
                                 }
                             })
                     )
                     .into(mPhotoView);
+
+            contentAlreadySet = true;
         } else {
             mRootView.setVisibility(View.GONE);
             mToolbar.setTitle("N/A");
@@ -210,9 +240,27 @@ public class ArticleDetailFragment extends Fragment implements
         articleText = articleText.replaceAll("\r\n", " ");
         articleText = articleText.replaceAll(tempText, "\r\n\r\n");
 
+        // Remove duplicated blank spaces
         articleText = articleText.replaceAll(" {2,}", " ");
 
         return articleText;
+    }
+
+    private void updateStatusBarColor() {
+        Activity activity = getActivityCast();
+
+        if (activity != null && statusBarColor != INVALID_COLOR) {
+            Window window = activity.getWindow();
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+                window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+
+                window.setStatusBarColor(statusBarColor);
+            }
+        }
+
+        visibilityAlreadyRequested = true;
     }
 
     @Override
@@ -236,7 +284,9 @@ public class ArticleDetailFragment extends Fragment implements
             mCursor = null;
         }
 
-        bindViews();
+        if (!contentAlreadySet) {
+            bindViews();
+        }
     }
 
     @Override
